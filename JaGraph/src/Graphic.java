@@ -38,6 +38,7 @@ public class Graphic {
 		}
 	}
 	
+	//Write graph information
 	public void AfficheGraph(Graph image){
 		Node temp;
 		System.out.println("Graph name : "+getName());
@@ -68,6 +69,7 @@ public class Graphic {
 	public void suppressNode(int i,Graph image){
 		Node node;
 		ArrayList<Edge> e;
+		//Cycle graph
 		if(type == "cycle"){
 			node = nodes.remove(i);
 			e = node.getEdges();
@@ -82,7 +84,9 @@ public class Graphic {
 			}else{
 				edges.add(new Edge(nodes.get(nodes.size()-1),nodes.get(0)));
 			}
+		//Complete graph
 		}else{
+			//Remove just the node and their edges
 			node = nodes.remove(i);
 			e = node.getEdges();
 			for(int cpt = 0; cpt<e.size();cpt++){
@@ -96,9 +100,10 @@ public class Graphic {
 	//BFS function
 	public void bfs(int i, Graph image){
 		ArrayList<Node> queue = new ArrayList<Node>();
-		Node u;
-		Node s = nodes.get(i);
-		Node v;
+		Node u; //Actual vertex
+		Node s = nodes.get(i); //The source vertex
+		Node v; //Neighbour vertex
+		//initialise all the nodes
 		for(int cpt=0;cpt<nodes.size();cpt++){
 			if(i!=cpt){
 				u = nodes.get(cpt);
@@ -111,11 +116,15 @@ public class Graphic {
 		s.setD(0);
 		s.setPi(null);
 		queue.add(s);
+		//Terminate when all the nodes are visited
 		while (queue.size()!=0){
+			//Obtain the next vertex to visited
 			u = queue.get(0);
 			queue.remove(0);
+			//Check his neighbour
 			for (int j=0;j<u.edges.size();j++){
 				v = u.edges.get(j).getNeighbour(u);
+				//If we find a new node, add to the queue
 				if(v.getColor()=="white"){
 					v.setColor("gray");
 					v.setD(u.getD()+1);
@@ -123,11 +132,14 @@ public class Graphic {
 					queue.add(v);
 				}
 			}
+			//Vertex is visited
 			u.setColor("black");
 		}
+		//Print the Graph
 		createImageBfs(image);
 	}
 	
+	//Print a graph
 	public void createImage(Graph image){
 		image.clear();
 		nodesLoop(image);
@@ -138,6 +150,7 @@ public class Graphic {
 		}
 	}
 	
+	//Print BFS graph
 	public void createImageBfs(Graph image){
 		image.clear();
 		Node temp;
@@ -150,6 +163,7 @@ public class Graphic {
 		}
 	}
 	
+	//Create all nodes on a graph
 	public void nodesLoop(Graph image){
 		Node temp;
 		for(int t=0 ;t<nodes.size();t++){
@@ -160,27 +174,31 @@ public class Graphic {
 	}
 	
 	public void dijkstra(int i,Graph image){
-		image.clear();
-		initialiseSource(i);
-		ArrayList<Edge> es;
-		ArrayList<Node> Q = new ArrayList<Node>();
+		initialiseSource(i); //Dijkstra initialise
+		ArrayList<Edge> es; //The edge list
+		ArrayList<Node> Q = new ArrayList<Node>(); //The copy of the node's list 
 		Q.addAll(nodes);
 		Node u;
+		//Randomize the weight of edges
 		for(int cpt=0;cpt<edges.size();cpt++){
 			edges.get(cpt).setWeight((int)(Math.random() * 20));
 		}
+		//Check all the edges and relax
 		while (Q.size() != 0){
+			//Take the minimum weight edge
 			u = extractMin(Q);
 			Q.remove(u);
 			es = u.getEdges();
+			//Relax the neighbours edges
 			for(int cpt=0;cpt<es.size();cpt++){
 				relax(u,es.get(cpt).getNeighbour(u),es.get(cpt));
 			}
 		}
+		//Print the graph
 		createImageDijkstra(image);
-		System.out.println(nodes.get(i).getName());
 	}
 	
+	//Initialise the nodes
 	public void initialiseSource(int i){
 		for(int cpt=0;cpt<nodes.size();cpt++){
 			if(cpt != i){
@@ -194,6 +212,7 @@ public class Graphic {
 		}
 	}
 	
+	//Extract the minimum weight edge
 	public Node extractMin(ArrayList<Node> q){
 		Node min= q.get(0);
 		for(int cpt=0;cpt<q.size();cpt++){
@@ -204,6 +223,7 @@ public class Graphic {
 		return min;
 	}
 	
+	//Relax an edge
 	public void relax(Node u, Node v, Edge e){
 		if (v.getD() > u.getD() + e.getWeight()){
 			v.setD(u.getD()+e.getWeight());
@@ -211,6 +231,7 @@ public class Graphic {
 		}
 	}
 	
+	//Print dijkstra graph
 	public void createImageDijkstra(Graph image){
 		Node temp;
 		for(int t=0 ;t<nodes.size();t++){

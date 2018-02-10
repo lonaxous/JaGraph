@@ -150,6 +150,7 @@ public class Main {
 		graph.AfficheGraph(image);
 	}
 	
+	//Delete a node on a selected graph
 	public static void suppressNode(){
 		Graphic graph = chooseGraph();
 		if(graph.getNbNodes()>0){
@@ -163,6 +164,7 @@ public class Main {
 		else System.out.println("This Graph has no nodes");
 	}
 	
+	//Make BFS
 	public static void bfs(){
 		Graphic graph = chooseGraph();
 		int result;
@@ -171,6 +173,7 @@ public class Main {
 		graph.bfs(result,image);
 	}
 	
+	//Make Dijkstra
 	public static void dijkstra(){
 		Graphic graph = chooseGraph();
 		int result;
@@ -179,6 +182,7 @@ public class Main {
 		graph.dijkstra(result,image);
 	}
 	
+	//Return the user select node
 	public static int findNode(Graphic graph){
 		boolean find = false;
 		int result;
